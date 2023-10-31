@@ -17,7 +17,7 @@ bias_model <- lm(y ~ I(x^3), data = df)
 df$predictions <- predict(bias_model, df)
 p_1 <- ggplot(df, aes(x, y)) +
   geom_point(alpha = .3) +
-  geom_line(aes(x, predictions), size = 1.5, color = KULbg) +
+  geom_line(aes(x, predictions), linewidth = 1.5, color = KULbg) +
   scale_y_continuous("Response", limits = c(-1.75, 1.75), expand = c(0, 0)) +
   scale_x_continuous(limits = c(0, 4.5), expand = c(0, 0)) + theme_bw() +
   ggtitle("Biased model fit")
@@ -28,7 +28,7 @@ variance_model <- knnreg(y ~ x, k = 3, data = df)
 df$predictions <- predict(variance_model, df)
 p_2 <- ggplot(df, aes(x, y)) +
   geom_point(alpha = .3) +
-  geom_line(aes(x, predictions), size = 1.5, color = KULbg) +
+  geom_line(aes(x, predictions), linewidth = 1.5, color = KULbg) +
   scale_y_continuous("Response", limits = c(-1.75, 1.75), expand = c(0, 0)) +
   scale_x_continuous(limits = c(0, 4.5), expand = c(0, 0)) + theme_bw() +
   ggtitle("High variance model fit")
@@ -112,15 +112,26 @@ holdout_results <- function(s, k_val) {
 
 ## Your Turn!
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+# Q1
+hyper_grid <- expand.grid(k = seq(2, 150, by = 2))  
+# Q2
+res <- holdout_results(cv_rsample$splits[[3]],hyper_grid[1,])
+sqrt(sum((res$obs-res$pred)^2)/nrow(res))
+# Q3
+RMSE <- numeric(nrow(hyper_grid))
+SE   <- numeric(nrow(hyper_grid))
 
-
-
-
-
+for(i in (1:nrow(hyper_grid))){
+  cv_rsample$results <- map(cv_rsample$splits, holdout_results, hyper_grid[i,])
+  res <- map_dbl(cv_rsample$results, function(x) mean((x$obs - x$pred)^2))
+  RMSE[i] <- mean(sqrt(res))
+  SE[i]   <- sd(sqrt(res))
+}
 
 
 
 ## ----------------------------------------------------------------------------------------------
+# Q4
 df <- tibble(RMSE, SE, k = hyper_grid$k)
 df <- df %>% mutate(lower = RMSE-SE, upper = RMSE + SE)
 best <- df %>% filter(RMSE == min(RMSE)) 
@@ -128,6 +139,7 @@ best
 
 
 ## ----------------------------------------------------------------------------------------------
+# Q5
 one_SE <- df %>% filter(RMSE <= best$upper) %>% filter(k == max(k)) 
 one_SE
 

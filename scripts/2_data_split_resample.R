@@ -114,8 +114,30 @@ purrr::map_dbl(cv_rsample$splits,
 
 ## Your Turn!
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+# caret
+set.seed(5678)
+ind_caret <- caret::createDataPartition(
+  y = ames$Sale_Price,
+  p = 5/6, list = FALSE)
+train_caret <- ames[ind_caret, ]
+test_caret  <- ames[-ind_caret, ]
+cv_caret <- caret::createFolds(
+  y = train_caret$Sale_Price, k = 5,
+  list = TRUE, returnTrain = FALSE)
+purrr::map_dbl(cv_caret,
+               ~ nrow(ames[., ]))
 
+nrow(test_caret)
 
+# rsample
+set.seed(5678)
+ind_rsample    <- rsample::initial_split(ames, prop = 5/6)
+train_rsample  <- rsample::training(ind_rsample)
+test_rsample   <- rsample::testing(ind_rsample)
+cv_rsample <- rsample::vfold_cv(train_rsample, v = 5)
+cv_rsample$splits
+map_dbl(cv_rsample$splits, ~ nrow(rsample::assessment(.)))
+nrow(test_rsample)
 
 
 

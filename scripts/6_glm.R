@@ -40,20 +40,35 @@ g
 
 ## Your Turn!
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+ggplot(mtpl, aes(ageph)) + theme_bw() + 
+  geom_histogram(binwidth = 2, alpha = .5,
+           col = KULbg, fill = KULbg) + 
+  labs(y = "Absolute frequency") +
+  ggtitle("MTPL - age policyholder")
+
+mtpl %>% group_by(ageph) %>% summarize(total_exposure = sum(expo),
+                                       total_number_claims = sum(nclaims),
+                                       total_observations=n())
 
 
+freq_by_age <- mtpl %>% group_by(ageph) %>% summarize(emp_freq = sum(nclaims) / sum(expo))
+
+ggplot(data = freq_by_age,
+       aes(x = ageph, y = emp_freq)) + theme_bw() +
+  geom_bar(stat = 'identity', alpha = .5,
+           color = KULbg, fill = KULbg) +
+  ggtitle('MTPL - empirical claim freq per
+          age policyholder')
 
 
+freq_by_bm <- mtpl %>% group_by(bm) %>% summarize(emp_freq = sum(nclaims) / sum(expo))
 
-
-
-
-
-
-
-
-
-
+ggplot(data = freq_by_bm,
+       aes(x = bm, y = emp_freq)) + theme_bw() +
+  geom_bar(stat = 'identity', alpha = .5,
+           color = KULbg, fill = KULbg) +
+  ggtitle('MTPL - empirical claim freq per
+          age policyholder')
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -88,13 +103,22 @@ freq_glm_1 %>% broom::glance()
 
 ## Your Turn!
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+# Q1
+?predict.glm
+# Q2
+sex_driver <- data.frame(expo = c(1,1), sex = c("male","female"))
+sex_driver$predict <- predict(freq_glm_1, newdata = sex_driver, type="response")
 
+predict(freq_glm_1, newdata = sex_driver, type="link")
+exp(predict(freq_glm_1, newdata = sex_driver, type="link"))
 
+predict(freq_glm_1, newdata = sex_driver, type="terms")
 
+# Q3
+sev_glm_1 <- glm(avg ~ sex, 
+                  family = Gamma(link = "log"), 
+                  data = mtpl)
 
-
-
-
-
-
+summary(sev_glm_1)
+#sex is not a explanatory variable for the severity.
 

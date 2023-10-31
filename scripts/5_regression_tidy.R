@@ -4,29 +4,31 @@
 
 library(tidyverse)
 
+library(AmesHousing)
+ames <- AmesHousing::make_ames()
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+# model_fn staat voor alle soort modellen, bijv linear lm of glm etc.
 # model_fn(Sale_Price ~ Gr_Liv_Area, data = ames)
-
+lm(Sale_Price ~ Gr_Liv_Area, data = ames)
 # model_fn(Sale_Price ~ Gr_Liv_Area + Neighborhood, data = ames)
-
+lm(Sale_Price ~ Gr_Liv_Area + Neighborhood, data = ames)
 # model_fn(Sale_Price ~ Gr_Liv_Area + Neighborhood + Neighborhood:Gr_Liv_Area, data = ames)
-
+lm(Sale_Price ~ Gr_Liv_Area + Neighborhood + Neighborhood:Gr_Liv_Area, data = ames)
 # model_fn(Sale_Price ~ ., data = ames)
-
+lm(Sale_Price ~ ., data = ames)
 
 ## Your Turn!
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+ames <- AmesHousing::make_ames()
+model_1 <- lm(Sale_Price ~ Gr_Liv_Area, data = ames)
 
+summary(model_1)
+model_1$coefficients
+summary(model_1)$coefficients
 
+head(model_1$fitted.values)
 
-
-
-
-
-
-
-
-
+summary(model_1)$r.squared
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
 library(AmesHousing)

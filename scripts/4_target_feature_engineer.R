@@ -19,18 +19,22 @@ summary(ames_test$Sale_Price)
 
 ## Your Turn! fill in the blanks
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+KULbg <- "#116E8A"
 
-ggplot(data = ames_train, aes(x = ___)) + 
+porg <- ggplot(data = ames_train, aes(x = Sale_Price)) + 
   geom_histogram(bins = 50, fill = KULbg, col = KULbg, alpha = 0.5) +
   theme_bw() + ggtitle("AMES - original target")
 
+ptrans <- ggplot(data = ames_train, aes(x = log(Sale_Price))) + 
+  geom_histogram(bins = 50, fill = KULbg, col = KULbg, alpha = 0.5) +
+  theme_bw() + ggtitle("AMES - transformed target")
 
-
+gridExtra::grid.arrange(porg, ptrans, ncol = 2)
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
 ames_train %>% group_by(Neighborhood) %>%
   summarize(n_obs = n()) %>%
-  arrange(n_obs) %>% 
+  arrange(n_obs) %>% #decreasing -n_obs
   slice(1:4)
 
 df <- ames_train %>% group_by(Neighborhood) %>% summarize(n_obs = n()) %>% arrange(n_obs)
@@ -73,13 +77,53 @@ juice(mod_rec_trained) %>% group_by(Neighborhood) %>%
 
 ## Your Turn!
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+ames_train %>% group_by(House_Style) %>%
+  summarize(n_obs = n()) %>%
+  arrange(n_obs)
+
+df_hs <- ames_train %>% group_by(House_Style) %>% summarize(n_obs = n()) %>% arrange(n_obs)
+KULbg <- "#116E8A"
+ggplot(ames_train, aes(x = fct_infreq(House_Style))) + theme_bw() +
+  geom_bar(col = KULbg, fill = KULbg, alpha = .5) + 
+  coord_flip() + 
+  xlab("") 
+
+# Near-zero-variance features
+library(caret)
+nzv <- caret::nearZeroVar(ames_train, saveMetrics = TRUE)
+names(ames_train)[nzv$zeroVar]
+names(ames_train)[nzv$nzv]
+
+mod_rec <- recipe(Sale_Price ~ ., data = ames_train) %>% 
+  step_log(all_outcomes()) %>%
+  step_other(Neighborhood, threshold = 0.05) %>%
+  step_other(House_Style,  threshold = 0.05) %>%
+  step_zv(all_predictors()) %>%
+  step_nzv(all_predictors()) %>%
+  step_center(all_numeric(), -all_outcomes()) %>% 
+  step_scale(all_numeric(), -all_outcomes())
+
+summary(mod_rec) %>% slice(1:6)
+
+mod_rec
+
+mod_rec_trained <- prep(mod_rec,
+                        training = ames_train,
+                        verbose = TRUE, retain = TRUE)
+
+ames_test_prep <- bake(mod_rec_trained,
+                       new_data = ames_test)
 
 
+dim(juice(mod_rec_trained))
 
+head(juice(mod_rec_trained)$Sale_Price)
+head(ames_train$Sale_Price)
+head(ames_test_prep$Sale_Price)
+head(ames_test$Sale_Price)
 
-
-
-
+levels(juice(mod_rec_trained)$House_Style)
+levels(ames_test_prep$House_Style)
 ## Putting it all together
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
 
