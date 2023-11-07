@@ -11,8 +11,8 @@ library(tidyverse)
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
 library(glmnet)
 data(QuickStartExample)
-
-
+x <- QuickStartExample$x
+y <- QuickStartExample$y
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
 fit <- glmnet(x, y, family = "gaussian", alpha = 1, standardize = TRUE, intercept = TRUE)
 summary(fit)

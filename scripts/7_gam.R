@@ -35,8 +35,8 @@ u_glm_age <- pred_glm_age$fit + qnorm(0.975)*pred_glm_age$se.fit
 df <- data.frame(a, b_glm_age, l_glm_age, u_glm_age)
 
 p_glm_age <- ggplot(df, aes(x = a)) + ylim(-0.5, 1)
-p_glm_age <- p_glm_age + geom_line(aes(a, b_glm_age), size = 1, col = KULbg)   
-p_glm_age <- p_glm_age + geom_line(aes(a, u_glm_age), size = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_glm_age), size = 0.5, linetype = 2, col = KULbg)
+p_glm_age <- p_glm_age + geom_line(aes(a, b_glm_age), linewidth = 1, col = KULbg)   
+p_glm_age <- p_glm_age + geom_line(aes(a, u_glm_age), linewidth = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_glm_age), linewidth = 0.5, linetype = 2, col = KULbg)
 p_glm_age <- p_glm_age + xlab("ageph") + ylab("fit") + theme_bw()
 p_glm_age
 
@@ -50,8 +50,8 @@ u_glm_age_f <- pred_glm_age_f$fit + qnorm(0.975)*pred_glm_age_f$se.fit
 df <- data.frame(a, b_glm_age_f, l_glm_age_f, u_glm_age_f)
 
 p_glm_age_f <- ggplot(df, aes(x = a)) + ylim(-0.5, 1)
-p_glm_age_f <- p_glm_age_f + geom_line(aes(a, b_glm_age_f), size = 1, col = KULbg)   
-p_glm_age_f <- p_glm_age_f + geom_line(aes(a, u_glm_age_f), size = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_glm_age_f), size = 0.5, linetype = 2, col = KULbg)
+p_glm_age_f <- p_glm_age_f + geom_line(aes(a, b_glm_age_f), linewidth = 1, col = KULbg)   
+p_glm_age_f <- p_glm_age_f + geom_line(aes(a, u_glm_age_f), linewidth = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_glm_age_f), linewidth = 0.5, linetype = 2, col = KULbg)
 p_glm_age_f <- p_glm_age_f + xlab("ageph") + ylab("fit") + theme_bw()
 p_glm_age_f
 
@@ -66,8 +66,8 @@ u_glm_age_c <- pred_glm_age_c$fit + qnorm(0.975)*pred_glm_age_c$se.fit
 df <- data.frame(a, b_glm_age_c, l_glm_age_c, u_glm_age_c)
 
 p_glm_age_c <- ggplot(df, aes(x = a)) + ylim(-0.5, 1)
-p_glm_age_c <- p_glm_age_c + geom_line(aes(a, b_glm_age_c), size = 1, col = KULbg)   
-p_glm_age_c <- p_glm_age_c + geom_line(aes(a, u_glm_age_c), size = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_glm_age_c), size = 0.5, linetype = 2, col = KULbg)
+p_glm_age_c <- p_glm_age_c + geom_line(aes(a, b_glm_age_c), linewidth = 1, col = KULbg)   
+p_glm_age_c <- p_glm_age_c + geom_line(aes(a, u_glm_age_c), linewidth = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_glm_age_c), linewidth = 0.5, linetype = 2, col = KULbg)
 p_glm_age_c <- p_glm_age_c + xlab("ageph") + ylab("fit") + theme_bw()
 p_glm_age_c
 
@@ -87,8 +87,8 @@ u_gam_age <- pred_gam_age$fit + qnorm(0.975)*pred_gam_age$se.fit
 df <- data.frame(a, b_gam_age, l_gam_age, u_gam_age)
 
 p_gam_age <- ggplot(df, aes(x = a)) + ylim(-0.5, 1)
-p_gam_age <- p_gam_age + geom_line(aes(a, b_gam_age), size = 1, col = KULbg)   
-p_gam_age <- p_gam_age + geom_line(aes(a, u_gam_age), size = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_gam_age), size = 0.5, linetype = 2, col = KULbg)
+p_gam_age <- p_gam_age + geom_line(aes(a, b_gam_age), linewidth = 1, col = KULbg)   
+p_gam_age <- p_gam_age + geom_line(aes(a, u_gam_age), linewidth = 0.5, linetype = 2, col = KULbg) + geom_line(aes(a, l_gam_age), linewidth = 0.5, linetype = 2, col = KULbg)
 p_gam_age <- p_gam_age + xlab("ageph") + ylab("fit") + theme_bw()
 p_gam_age
 
@@ -105,7 +105,7 @@ bias_model <- gam(accel ~ s(times, sp = 0, k = 3), data = mcycle)
 mcycle$predictions <- predict(bias_model, mcycle)
 p_1 <- ggplot(mcycle, aes(times, accel)) + theme_bw() +
   geom_point(alpha = .3) +
-  geom_line(aes(times, predictions), size = 1.0, color = KULbg) +
+  geom_line(aes(times, predictions), linewidth = 1.0, color = KULbg) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
@@ -116,7 +116,7 @@ bias_model <- gam(accel ~ s(times, sp = 0, k = 5), data = mcycle)
 mcycle$predictions <- predict(bias_model, mcycle)
 p_2 <- ggplot(mcycle, aes(times, accel)) + theme_bw() +
   geom_point(alpha = .3) +
-  geom_line(aes(times, predictions), size = 1.0, color = KULbg) +
+  geom_line(aes(times, predictions), linewidth = 1.0, color = KULbg) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
@@ -127,7 +127,7 @@ bias_model <- gam(accel ~ s(times, sp = 0, k = 55), data = mcycle)
 mcycle$predictions <- predict(bias_model, mcycle)
 p_3 <- ggplot(mcycle, aes(times, accel)) + theme_bw() +
   geom_point(alpha = .3) +
-  geom_line(aes(times, predictions), size = 1.0, color = KULbg) +
+  geom_line(aes(times, predictions), linewidth = 1.0, color = KULbg) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
@@ -138,7 +138,7 @@ bias_model <- gam(accel ~ s(times), data = mcycle)
 mcycle$predictions <- predict(bias_model, mcycle)
 p_4 <- ggplot(mcycle, aes(times, accel)) + theme_bw() + 
   geom_point(alpha = .3) +
-  geom_line(aes(times, predictions), size = 1.0, color = KULbg) +
+  geom_line(aes(times, predictions), linewidth = 1.0, color = KULbg) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
@@ -149,7 +149,7 @@ bias_model <- gam(accel ~ s(times, sp = 3), data = mcycle)
 mcycle$predictions <- predict(bias_model, mcycle)
 p_5 <- ggplot(mcycle, aes(times, accel)) + theme_bw() +
   geom_point(alpha = .3) +
-  geom_line(aes(times, predictions), size = 1.0, color = KULbg) +
+  geom_line(aes(times, predictions), linewidth = 1.0, color = KULbg) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
@@ -160,7 +160,7 @@ bias_model <- gam(accel ~ s(times, sp = 20), data = mcycle)
 mcycle$predictions <- predict(bias_model, mcycle)
 p_6 <- ggplot(mcycle, aes(times, accel)) + theme_bw() +
   geom_point(alpha = .3) +
-  geom_line(aes(times, predictions), size = 1.0, color = KULbg) +
+  geom_line(aes(times, predictions), linewidth = 1.0, color = KULbg) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
@@ -172,7 +172,29 @@ gridExtra::grid.arrange(p_1, p_2, p_3, p_4, p_5, p_6, nrow = 2)
 
 ## Your Turn!
 ## --------------------------------------------------------------------------------------------------------------------------------------------------
+# Q1
+library(mgcv)
+freq_gam_2 <- gam(nclaims ~ sex + fuel + use + s(ageph) + s(bm),
+                    offset = log(expo),
+                    data = mtpl,
+                    family = poisson(link = "log"))
 
+summary(freq_gam_2)
+# plot(freq_gam_2, scheme = 2)
+plot(freq_gam_2, select = 1)
+plot(freq_gam_2, select = 2)
+# Q2
+drivers <- data.frame(expo = c(1, 1, 1),
+                      sex = c("female", "female", "female"),
+                      fuel = c("diesel", "diesel", "diesel"),
+                      use = c("private", "private", "private"),
+                      ageph = c(18, 45, 65), 
+                      bm = c(20, 5, 0))
+                      
+drivers
+
+predict(freq_gam_2, newdata = drivers,
+        type = "response")                             
 
 
 
