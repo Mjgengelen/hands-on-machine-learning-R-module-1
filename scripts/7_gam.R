@@ -195,16 +195,3 @@ drivers
 
 predict(freq_gam_2, newdata = drivers,
         type = "response")                             
-
-
-
-
-
-
-
-
-
-
-
-
-

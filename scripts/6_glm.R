@@ -121,4 +121,3 @@ sev_glm_1 <- glm(avg ~ sex,
 
 summary(sev_glm_1)
 #sex is not a explanatory variable for the severity.
-

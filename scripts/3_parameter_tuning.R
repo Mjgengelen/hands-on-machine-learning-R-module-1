@@ -167,21 +167,3 @@ big_g <- ggplot(data = df) + theme_bw() +
              aes(yintercept = upper)) +
   scale_y_continuous("Error (RMSE)")
 big_g
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

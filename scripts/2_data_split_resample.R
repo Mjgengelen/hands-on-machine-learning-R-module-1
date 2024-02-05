@@ -138,13 +138,3 @@ cv_rsample <- rsample::vfold_cv(train_rsample, v = 5)
 cv_rsample$splits
 map_dbl(cv_rsample$splits, ~ nrow(rsample::assessment(.)))
 nrow(test_rsample)
-
-
-
-
-
-
-
-
-
-
